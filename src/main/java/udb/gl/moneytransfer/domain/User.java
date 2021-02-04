@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -46,6 +47,50 @@ public class User{
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToOne
+    private Compte compte;
+
+    @OneToMany(mappedBy = "userEnvoyeur")
+    private List<Operation> depots;
+
+    @OneToMany(mappedBy = "userRemetteur")
+    private List<Operation> retraits;
+
+    public List<Operation> getDepots() {
+        return depots;
+    }
+
+    public void setDepots(List<Operation> depots) {
+        this.depots = depots;
+    }
+
+    public List<Operation> getRetraits() {
+        return retraits;
+    }
+
+    public void setRetraits(List<Operation> retraits) {
+        this.retraits = retraits;
+    }
+
+    public Compte getCompte() {
+        return compte;
+    }
+
+    public void setCompte(Compte compte) {
+        this.compte = compte;
+    }
+
+    public Partenaire getPartenaire() {
+        return partenaire;
+    }
+
+    public void setPartenaire(Partenaire partenaire) {
+        this.partenaire = partenaire;
+    }
+
+    @ManyToOne
+    private Partenaire partenaire;
 
     public User() {}
 
