@@ -1,5 +1,6 @@
 package udb.gl.moneytransfer.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -48,12 +49,15 @@ public class User{
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     private Compte compte;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEnvoyeur")
     private List<Operation> depots;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userRemetteur")
     private List<Operation> retraits;
 

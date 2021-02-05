@@ -14,12 +14,22 @@ public class Operation {
     private Date dateEnvoi;
     @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Date dateRecuperation;
+    @Column(length = 20)
+    private String code;
     private int montant;
     private int commission;
     private int commissionDepot;
     private int commissionRetrait;
     private int commissionEtat;
     private int commissionSysteme;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     @ManyToOne
     private Client envoyeur;

@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import udb.gl.moneytransfer.domain.JwtRequest;
 import udb.gl.moneytransfer.domain.JwtResponse;
+import udb.gl.moneytransfer.domain.Response;
+import udb.gl.moneytransfer.domain.User;
+import udb.gl.moneytransfer.repositories.UserRepository;
 import udb.gl.moneytransfer.security.JwtTokenUtil;
 import udb.gl.moneytransfer.service.UserDetailsServiceImpl;
 
@@ -27,6 +30,8 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE })
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -38,7 +43,7 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE })
-    public @ResponseBody String createLoginToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createLoginToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         boolean auth = authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         if(auth) {
             final UserDetails userDetails = userDetailsService
@@ -47,9 +52,11 @@ public class JwtAuthenticationController {
             userDetails.getAuthorities().forEach(u -> {
                 System.out.println(u.getAuthority());
             });
-            return token;
+            User user = userRepository.findByUsername(authenticationRequest.getUsername()).get();
+            return ResponseEntity.ok(new Response(token, user));
+
         }
-        return "badcredentials";
+        return ResponseEntity.ok(new Response("badcredentials", null));
     }
 
     private boolean authenticate(String username, String password) throws Exception {
