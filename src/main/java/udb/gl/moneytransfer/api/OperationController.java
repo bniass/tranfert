@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import udb.gl.moneytransfer.domain.Operation;
 import udb.gl.moneytransfer.repositories.OperationRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 @RequestMapping("/api/operation")
 public class OperationController {
@@ -18,8 +21,10 @@ public class OperationController {
     @PostMapping("/envoi")
     public Operation add(@RequestBody Operation operation){
         try {
+            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateenvoi = sd.format(new Date());
+            operation.setDateEnvoi(sd.parse(dateenvoi));
             operationRepository.save(operation);
-
         }catch (Exception e){
             e.printStackTrace();
         }

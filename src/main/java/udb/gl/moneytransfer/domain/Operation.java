@@ -1,5 +1,6 @@
 package udb.gl.moneytransfer.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
