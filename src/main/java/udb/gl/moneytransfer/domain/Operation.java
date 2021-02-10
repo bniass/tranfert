@@ -32,10 +32,10 @@ public class Operation {
         this.code = code;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Client envoyeur;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Client destinataire;
 
     @ManyToOne

@@ -1,5 +1,7 @@
 package udb.gl.moneytransfer.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,9 +19,11 @@ public class Client {
     @Column(length = 15)
     private String tel;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "envoyeur")
     private List<Operation> envois;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "destinataire")
     private List<Operation> retraits;
 
